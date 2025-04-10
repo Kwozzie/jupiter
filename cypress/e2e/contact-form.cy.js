@@ -1,6 +1,6 @@
 import Header from '../pageObjects/header.js'
 import ContactPage from '../pageObjects/contactPage.js'
-import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker'
 
 const header = new Header()
 const contactPage = new ContactPage()
