@@ -87,7 +87,7 @@ class ContactPage {
     }
 
     shouldDisplayErrorsForAllRequiredFields() {
-        const errorClass = this.className(this.elements.error);
+        const errorClass = this.className(this.elements.error)
 
         this.headerMessageAlert().should('contain', this.text.errorAlert)
         this.headerMessageAlert().should('have.class', this.className(this.elements.alertError))
@@ -112,7 +112,7 @@ class ContactPage {
     shouldNotDisplayAnyErrors() {
         cy.get(this.elements.error).should('not.exist')
         cy.get(this.elements.inputWrapper).should('not.have.class', this.className(this.elements.error))
-        cy.get(this.elements.errorHint).should('not.exist');
+        cy.get(this.elements.errorHint).should('not.exist')
 
         // submit button is an <a> and not a <button>
         // unable to check if submit button is disabled
@@ -129,8 +129,8 @@ class ContactPage {
     }    
 
     shouldValidateEmail(emailAddress) {
-        const [emailUser, emailDomain] = emailAddress.split('@');
-        const emailDomainParts = emailDomain.split('.');
+        const [emailUser, emailDomain] = emailAddress.split('@')
+        const emailDomainParts = emailDomain.split('.')
 
         this.emailInput().clear().type(emailUser)
         this.clickSubmit()

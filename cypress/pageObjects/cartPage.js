@@ -18,10 +18,10 @@ class CartPage {
     shouldHaveTotalPrice(totalPrice) {
         cy.get(this.elements.cartItems).within(() => {
             // total money display is inconsistent with item money display
-            // cy.get(this.elements.total).should('have.text', `Total: $${totalPrice}`);
-            cy.get(this.elements.total).should('have.text', `Total: ${totalPrice}`);
+            // cy.get(this.elements.total).should('have.text', `Total: $${totalPrice}`)
+            cy.get(this.elements.total).should('have.text', `Total: ${totalPrice}`)
         })
     }
 }
 
-export default CartPage;
+export default CartPage
