@@ -1,11 +1,11 @@
 import Header from '../pageObjects/header.js'
 import ShopPage from '../pageObjects/shopPage.js'
-import Products from '../pageObjects/products.js'
+import Cart from '../pageObjects/cart.js'
 import CartPage from '../pageObjects/cartPage.js'
 
 const header = new Header()
-const products = new Products()
-const shopPage = new ShopPage()
+const cart = new Cart()
+const shopPage = new ShopPage(cart)
 const cartPage = new CartPage()
 
 const stuffedFrogCount = 2
@@ -24,46 +24,46 @@ describe('Shopping Cart', () => {
 
         cy.log('Add items to cart')
         for (let i = 0; i < stuffedFrogCount; i++) {
-            shopPage.buyItem(products.items.stuffedFrog)
+            shopPage.buyItem(cart.products.stuffedFrog)
         }
 
         for (let i = 0; i < fluffyBunnyCount; i++) {
-            shopPage.buyItem(products.items.fluffyBunny)
+            shopPage.buyItem(cart.products.fluffyBunny)
         }
 
         for (let i = 0; i < valentineBearCount; i++) {
-            shopPage.buyItem(products.items.valentineBear)
+            shopPage.buyItem(cart.products.valentineBear)
         }
 
         header.shouldHaveCartCount(totalItemCount)
 
-        shopPage.getCartItems().then((cart) => {
+        cart.getItems().then((items) => {
             cy.log('Make sure our test data is correct')
-            
-            expect(cart[products.items.stuffedFrog]).to.have.property('quantity', stuffedFrogCount)
-            expect(cart[products.items.fluffyBunny]).to.have.property('quantity', fluffyBunnyCount)
-            expect(cart[products.items.valentineBear]).to.have.property('quantity', valentineBearCount)
-            
-            const cartItemQuantity = Object.values(cart).reduce((acc, item) => {
+            expect(items[cart.products.stuffedFrog].quantity).to.equal(stuffedFrogCount)        
+            expect(items[cart.products.fluffyBunny].quantity).to.equal(fluffyBunnyCount)
+            expect(items[cart.products.valentineBear].quantity).to.equal(valentineBearCount)
+
+            const actualTotalQuantity = Object.values(items).reduce((acc, item) => {
                 return acc + item.quantity
             }, 0)
 
-            expect(cartItemQuantity).to.equal(totalItemCount)
+            expect(actualTotalQuantity).to.equal(totalItemCount)
 
             cy.log('Check that our cart is displaying correctly')
             
             header.clickCart()
 
-            const stuffedFrog = cart[products.items.stuffedFrog]
-            const fluffyBunny = cart[products.items.fluffyBunny]
-            const valentineBear = cart[products.items.valentineBear]
+            const stuffedFrog = items[cart.products.stuffedFrog]
+            const fluffyBunny = items[cart.products.fluffyBunny]
+            const valentineBear = items[cart.products.valentineBear]
 
-            cartPage.shouldHaveItem(products.items.stuffedFrog, stuffedFrog.itemPrice, stuffedFrog.quantity, stuffedFrog.price)
-            cartPage.shouldHaveItem(products.items.fluffyBunny, fluffyBunny.itemPrice, fluffyBunny.quantity, fluffyBunny.price)
-            cartPage.shouldHaveItem(products.items.valentineBear, valentineBear.itemPrice, valentineBear.quantity, valentineBear.price)
+            cartPage.shouldHaveItem(cart.products.stuffedFrog, stuffedFrog.itemPrice, stuffedFrog.quantity, stuffedFrog.price)
+            cartPage.shouldHaveItem(cart.products.fluffyBunny, fluffyBunny.itemPrice, fluffyBunny.quantity, fluffyBunny.price)
+            cartPage.shouldHaveItem(cart.products.valentineBear, valentineBear.itemPrice, valentineBear.quantity, valentineBear.price)           
+        })
 
-            const totalPrice = shopPage.getCartTotal()
-            cartPage.shouldHaveTotalPrice(totalPrice)
+        cart.getTotalPrice().then((totalPrice) => {
+            cartPage.shouldHaveTotalPrice(totalPrice) 
         })
     })
 })
