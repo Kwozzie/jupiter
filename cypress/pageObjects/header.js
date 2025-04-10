@@ -24,12 +24,15 @@ class Header {
     clickLogIn() {
         cy.get(this.elements.navLogIn).click()
     }
+    
     clickLogOut() {
         cy.get(this.elements.navLogOut).click()
     }
+
     clickCart() {
         cy.get(this.elements.navCart).click()
     }
+    
     shouldHaveCartCount(count) {
         cy.get(this.elements.cartCount).should('have.text', count)
     }
